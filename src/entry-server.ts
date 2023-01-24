@@ -11,7 +11,7 @@ export async function render(url:string, manifest: any) {
 
   const ctx = {}
   const html = await renderToString(app, ctx)
-  console.log('ctx -- ', ctx)
+  
   //const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
   //console.log('entry-server-preload -- ', preloadLinks)
   

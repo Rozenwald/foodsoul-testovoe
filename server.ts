@@ -5,20 +5,20 @@ import { fileURLToPath } from 'node:url'
 import { createServer as createViteServer, ViteDevServer } from 'vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const resolve = (p: any) => path.resolve(__dirname, p)
+const resolve = (p: string) => path.resolve(__dirname, p)
 
 export async function createServer() {
 
-  let app: any = express()
+  let app: express.Application = express()
 
-  const vite = await createViteServer({
+  const vite: ViteDevServer = await createViteServer({
     server: { middlewareMode: true },
     appType: 'custom',
   })
 
   app.use(vite.middlewares)
 
-  app.use('*', async (req: any, res: any) => {
+  app.use('*', async (req: express.Request, res: express.Response) => {
     const url = req.originalUrl
     try {
       let render
@@ -40,17 +40,17 @@ export async function createServer() {
         //.replace(`<!--preload-links-->`, preloadLinks)
       
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
-    } catch (e:any) {
+    } catch (e: any) {
       vite.ssrFixStacktrace(e)
       console.log(e.stack)
       res.status(500).end(e.stack)
     }
   })
-  app.listen(1488)
+  app.listen(5000)
 }
 
 createServer()
   .then(() => {
-      console.log('server start on http://localhost:1488')
+      console.log('server start on http://localhost:5000')
     }
   )
