@@ -31,7 +31,7 @@ export async function createServer() {
 
       ({ render } = await vite.ssrLoadModule('/src/entry-server.ts'))
 
-      const manifest = JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
+      const manifest = {} // JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
 
       const [appHtml, preloadLinks] = await render(url, manifest)
 
