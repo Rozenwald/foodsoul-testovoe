@@ -1,11 +1,10 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
-import App from '../App.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: App,
+    component: () => import('../App.vue'),
   },
 ]
 

@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "comment": "axios@1.2.3 не работает импорт типов, глянуть почему",
   "scripts": {
+    "vite": "vite",
     "dev": "ts-node server.ts",
     "build": "vite build --outDir dist/client --ssrManifest",
     "preview": "vite preview"
@@ -14,8 +14,8 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "pinia": "^2.0.29",
-    "pug": "^3.0.2",
     "sass": "^1.57.1",
+    "ts-node": "^10.9.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.3"
   },

@@ -8,7 +8,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const resolve = (p: string) => path.resolve(__dirname, p)
 
 export async function createServer() {
-
   let app: express.Application = express()
 
   const vite: ViteDevServer = await createViteServer({
@@ -31,15 +30,29 @@ export async function createServer() {
 
       ({ render } = await vite.ssrLoadModule('/src/entry-server.ts'))
 
-      const manifest = {} // JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
+      let manifest: string | null
+      if (fs.existsSync('dist/client/ssr-manifest.json')) {
+        manifest = JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
+      } else {
+        manifest = null
+      }
 
       const [appHtml, preloadLinks] = await render(url, manifest)
 
-      const html = template
-        .replace(`app-html`, appHtml)
-        //.replace(`<!--preload-links-->`, preloadLinks)
+      let html
+      if (preloadLinks) {
+        html = template
+          .replace(`app-html`, appHtml)
+          .replace(`<!--preload-links-->`, preloadLinks)
+      } else {
+        html = template
+          .replace(`app-html`, appHtml)
+      }
       
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+      res
+        .status(200)
+        .set({ 'Content-Type': 'text/html' })
+        .end(html)
     } catch (e: any) {
       vite.ssrFixStacktrace(e)
       console.log(e.stack)
